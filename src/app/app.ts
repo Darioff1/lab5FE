@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit, signal } from '@angular/core';
+import { Data,RouterOutlet } from '@angular/router';
+import { DataService } from './Services/data-service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,25 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('data-app');
+export class App implements OnInit{
+  students: any []=[]
+  weather:any[]=[];
+  constructor(private dataService:DataService){}
+  ngOnInit():void{
+    this.dataService.GetStudentsData().subscribe(
+      (data)=>{
+        this.students=data.students;
+        console.log(this.students);
+
+      }
+    );
+
+    this.dataService.GetWeatherData().subscribe(
+      (data)=>{
+        this.weather=data.weather;
+        console.log(this.weather);
+
+      }
+    )
+  }
 }
